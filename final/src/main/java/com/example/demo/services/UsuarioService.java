@@ -1,16 +1,22 @@
 package com.example.demo.services;
 
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.RolRequestDto;
 import com.example.demo.model.Distritos;
 import com.example.demo.model.Rol;
 import com.example.demo.model.Usuario;
 import com.example.demo.repositories.DistritoRepository;
 import com.example.demo.repositories.RolRepository;
 import com.example.demo.repositories.UsuarioRepository;
+import com.example.demo.util.UsuarioMapper;
 @Service
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
@@ -27,6 +33,9 @@ public class UsuarioService {
 
     public Usuario obtenerUsuarioPorUsername(String username) {
         return usuarioRepository.findByUsername(username);
+    }
+    public List<RolRequestDto> listarRoles(){
+        return UsuarioMapper.toDtoList(rolRepository.findAll());
     }
     
     public Usuario registrar(RegisterRequest request){
