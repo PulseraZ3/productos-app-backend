@@ -41,14 +41,11 @@ public class SecurityConfig {
                 })
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/distrito").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/rol").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/categoria").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/productos").permitAll()
+                        // Endpoints públicos
+                        .requestMatchers("/api/v1/auth/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/register")
-                        .permitAll().anyRequest().authenticated())
+                        // Todo lo demás requiere token
+                        .anyRequest().authenticated())
                 .authenticationProvider(daoAuth())
                 .addFilterBefore(new FiltroJwtAuth(jwtService), UsernamePasswordAuthenticationFilter.class);
         return http.build();

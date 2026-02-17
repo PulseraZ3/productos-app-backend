@@ -51,6 +51,7 @@ public class AuthController {
                     detalleUsuarioService.obtenerAutorizacionPorRol(usuario.getRol()));
             userSecurity.setIdUsuario(usuario.getIdUsuario());
             userSecurity.setUsername(usuario.getUsername());
+            userSecurity.setRol(usuario.getRol().getNombre());
             userSecurity.setToken(token);
             return ResponseEntity.ok(userSecurity);
 

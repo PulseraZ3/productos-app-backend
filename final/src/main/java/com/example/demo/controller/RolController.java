@@ -4,15 +4,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.RolRequestDto;
-import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.services.UsuarioService;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @RequestMapping("/api/v1/rol")
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 public class RolController {
     private final UsuarioService usuarioService;
@@ -25,5 +25,5 @@ public class RolController {
     public List<RolRequestDto> listarRoles() {
         return usuarioService.listarRoles();
     }
-    
+
 }
