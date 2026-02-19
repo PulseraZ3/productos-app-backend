@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dto.ProductoPorCategoriaDto;
 import com.example.demo.dto.ProductoPorUsuarioDto;
-import com.example.demo.model.Categorias;
 import com.example.demo.model.Productos;
 import com.example.demo.model.Usuario;
 
