@@ -7,6 +7,7 @@ import com.example.demo.dto.GenericResponseDto;
 import com.example.demo.dto.ProductoDto;
 import com.example.demo.dto.ProductoPorCategoriaDto;
 import com.example.demo.dto.ProductoPorUsuarioDto;
+import com.example.demo.model.Productos;
 import com.example.demo.services.ProductoService;
 
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,6 +54,7 @@ public class ProductoController {
         response.setResponse(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @GetMapping("/usuario")
     public ResponseEntity<GenericResponseDto<List<ProductoPorUsuarioDto>>> getProductosByUsuario() {
         List<ProductoPorUsuarioDto> dto = productoService.listarPorUsuario();
@@ -74,6 +77,16 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/categoria/{idcategoria}")
+    public ResponseEntity<GenericResponseDto<List<ProductoDto>>> getProductosPorCategoria(@PathVariable Integer idcategoria) {
+        List<ProductoDto> dto = productoService.productosPorCategoria(idcategoria);
+        if (dto.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        GenericResponseDto<List<ProductoDto>> response = new GenericResponseDto<>();
+        response.setResponse(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<ProductoDto> createProducto(@RequestBody ProductoDto dto) {
         ProductoDto nuevo = productoService.guardar(dto);

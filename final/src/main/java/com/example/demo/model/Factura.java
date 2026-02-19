@@ -1,72 +1,42 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "factura")
+@Getter
+@Setter
 public class Factura {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idFactura")
     private Integer idFactura;
 
+    @Column(name = "fecha")
     private LocalDate fecha;
-    private double total;
-    private String cliente;
+
+    @Column(name = "total")
+    private Double total;
+
+    @Column(name = "metodo_pago")
     private String metodoPago;
 
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
     @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetalleFactura> detalles;
+    private List<DetalleFactura> detalles = new ArrayList<>();
 
-    public Integer getIdFactura() {
-        return idFactura;
+    public void agregarDetalle(DetalleFactura d) {
+        detalles.add(d);
+        d.setFactura(this);
     }
-
-    public void setIdFactura(Integer idFactura) {
-        this.idFactura = idFactura;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public String getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
-    }
-
-    public String getMetodoPago() {
-        return metodoPago;
-    }
-
-    public void setMetodoPago(String metodoPago) {
-        this.metodoPago = metodoPago;
-    }
-
-    public List<DetalleFactura> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<DetalleFactura> detalles) {
-        this.detalles = detalles;
-    }
-
-    
 }

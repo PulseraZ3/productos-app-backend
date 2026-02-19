@@ -51,7 +51,9 @@ public class ProductoService implements IProductoService {
     public Productos buscarId(int idproducto) {
         return repo.findById(idproducto).orElse(null);
     }
-
+    public List<ProductoDto> productosPorCategoria(Integer idcategoria) {
+        return ProductoMapper.toDoList(repo.findByCategoriaIdcategoria(idcategoria));
+    }
     @Override
     public boolean cambiarEstadoProducto(Integer idProducto) {
         return repo.findById(idProducto)

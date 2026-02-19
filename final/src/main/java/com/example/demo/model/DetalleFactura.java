@@ -1,62 +1,38 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "detallefactura")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DetalleFactura {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "idDetalle")
+    @Column(name = "idDetalle") 
     private Integer idDetalle;
 
     @ManyToOne
-    @JoinColumn(name = "idFactura", nullable = false)
+    @JoinColumn(name = "id_factura")
     private Factura factura;
 
     @ManyToOne
-    @JoinColumn(name = "idProducto", nullable = false)
+    @JoinColumn(name = "id_producto")
     private Productos producto;
 
+    @Column(name = "cantidad")
     private Integer cantidad;
-    private double precioUnitario;
-    private double subtotal;
-    public Integer getIdDetalle() {
-        return idDetalle;
-    }
-    public void setIdDetalle(Integer idDetalle) {
-        this.idDetalle = idDetalle;
-    }
-    public Factura getFactura() {
-        return factura;
-    }
-    public void setFactura(Factura factura) {
-        this.factura = factura;
-    }
-    public Productos getProducto() {
-        return producto;
-    }
-    public void setProducto(Productos producto) {
-        this.producto = producto;
-    }
-    public Integer getCantidad() {
-        return cantidad;
-    }
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-    public double getPrecioUnitario() {
-        return precioUnitario;
-    }
-    public void setPrecioUnitario(double precioUnitario) {
-        this.precioUnitario = precioUnitario;
-    }
-    public double getSubtotal() {
-        return subtotal;
-    }
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
-    }
 
-    
+    @Column(name = "precio_unitario")
+    private Double precioUnitario;
+
+    @Column(name = "subtotal")
+    private Double subtotal;
 }
