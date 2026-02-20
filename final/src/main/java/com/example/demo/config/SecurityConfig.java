@@ -45,7 +45,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/pedidos/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/distrito/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categoria/**").permitAll()
-
+                        .requestMatchers(HttpMethod.GET, "/api/productos/categoria/**").permitAll()
+                        .requestMatchers("/imagenes/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/rol/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(daoAuth())
