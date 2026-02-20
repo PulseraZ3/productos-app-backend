@@ -13,7 +13,7 @@ public class StaticResourceConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + uploadDir + "/");
     }
 
-    @Value("${app.upload.dir}")
+    @Value("${APP_UPLOAD_DIR:/uploads}")
     private String uploadDir;
 
 }
