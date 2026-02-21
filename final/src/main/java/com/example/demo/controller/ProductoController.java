@@ -36,9 +36,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/productos")
-@PreAuthorize("hasRole('ADMIN')")
 public class ProductoController {
-    @Autowired
+    @Autowired 
     private final ProductoService productoService;
     @Autowired
     private final ProductoRepository repo;
