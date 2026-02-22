@@ -16,10 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.dto.ProductoDto;
 import com.example.demo.dto.ProductoPorCategoriaDto;
 import com.example.demo.dto.ProductoPorUsuarioDto;
+import com.example.demo.model.Categorias;
 import com.example.demo.model.ProductoImagen;
 import com.example.demo.model.Productos;
+import com.example.demo.model.Usuario;
+import com.example.demo.repositories.CategoriaRepository;
 import com.example.demo.repositories.ProductoImagenRepository;
 import com.example.demo.repositories.ProductoRepository;
+import com.example.demo.repositories.UsuarioRepository;
 import com.example.demo.util.ProductoMapper;
 
 @Service
@@ -29,7 +33,10 @@ public class ProductoService implements IProductoService {
     private ProductoRepository repo;
     @Autowired
     private ProductoImagenRepository repoImagen;
-
+    @Autowired
+    private UsuarioRepository repoUsuario;
+    @Autowired
+    private CategoriaRepository repoCategoria;
     @Override
     public List<ProductoDto> listarTodo() {
         return ProductoMapper.toDoList(
@@ -77,8 +84,11 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public Productos buscarId(int idproducto) {
-        return repo.findById(idproducto).orElse(null);
+    public ProductoDto buscarId(int idproducto) {
+        Productos producto = repo.findById(idproducto)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        return ProductoMapper.toDto(producto);
     }
 
     public List<ProductoDto> productosPorCategoria(Integer idcategoria) {
@@ -96,11 +106,29 @@ public class ProductoService implements IProductoService {
                 .orElse(false);
     }
 
-    public ProductoDto editar(Integer id, ProductoDto dto) {
+    public Productos buscarEntidadPorId(Integer id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+    }
+
+    public ProductoDto editar(Integer id, ProductoDto dto, Usuario usuarioLogueado) {
         Optional<Productos> optProducto = repo.findById(id);
         if (optProducto.isPresent()) {
             Productos producto = optProducto.get();
+
+            // Actualiza los demás campos del DTO
             ProductoMapper.updateEntity(producto, dto);
+
+            // Forzamos que registradoPor sea el usuario logueado
+            producto.setUsuario(usuarioLogueado);
+
+            // 🔹 Convertimos el idCategoria del DTO a una entidad Categorias existente
+            if (dto.getIdcategoria() != null) {
+                Categorias categoria = repoCategoria.findById(dto.getIdcategoria())
+                        .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+                producto.setCategoria(categoria);
+            }
+
             Productos actualizados = repo.save(producto);
             return ProductoMapper.toDto(actualizados);
         }

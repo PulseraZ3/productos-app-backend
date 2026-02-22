@@ -12,7 +12,7 @@ public interface IProductoService {
     List<ProductoDto> listarTodo();
     List<ProductoDto> listarEstado(boolean estado);
     ProductoDto guardar(ProductoDto dto);
-    Productos buscarId(int idproducto);
+    ProductoDto buscarId(int idproducto);
     boolean cambiarEstadoProducto(Integer idProducto);
     List<ProductoPorCategoriaDto> listarPorCategoria();
     List<ProductoPorUsuarioDto> listarPorUsuario();

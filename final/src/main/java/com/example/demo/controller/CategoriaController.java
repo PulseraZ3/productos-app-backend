@@ -44,7 +44,9 @@ public class CategoriaController {
 		if (categoria == null) {
 			return ResponseEntity.notFound().build();
 		}
-		GenericResponseDto<CategoriaDto> response = new GenericResponseDto<>();
+		GenericResponseDto
+		
+		<CategoriaDto> response = new GenericResponseDto<>();
 		response.setResponse(categoria);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
