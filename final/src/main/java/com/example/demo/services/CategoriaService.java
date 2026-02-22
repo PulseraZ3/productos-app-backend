@@ -34,8 +34,9 @@ public class CategoriaService implements ICategoriaService {
     }
 
     @Override
-    public Categorias buscarId(int idcategoria) {
-        return repo.findById(idcategoria).orElse(null);
+    public  CategoriaDto  buscarId(int id) {
+        return CategoriaMapper.toDto(repo.findById(id).orElse(null));
+        
     }
 
 

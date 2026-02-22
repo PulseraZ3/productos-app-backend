@@ -53,7 +53,12 @@ public class PedidoService {
                     .orElseThrow();
 
             DetalleFactura detalle = new DetalleFactura();
-
+            if (producto.getStock() < item.getCantidad()) {
+                throw new RuntimeException(
+                        "Stock insuficiente para el producto: " + producto.getNombre());
+            }
+            producto.setStock(
+                    producto.getStock() - item.getCantidad());
             detalle.setProducto(producto);
             detalle.setCantidad(item.getCantidad());
             detalle.setPrecioUnitario((double) producto.getPrecio());
@@ -64,6 +69,7 @@ public class PedidoService {
             total += subtotal;
 
             factura.agregarDetalle(detalle);
+
         }
 
         factura.setTotal(total);
@@ -72,6 +78,7 @@ public class PedidoService {
 
         return pedidoMapper.convertirFacturaADto(guardada);
     }
+
     private Usuario obtenerUsuarioLogueado() {
 
         String username = SecurityUtils.obtenerUsername();
@@ -81,13 +88,12 @@ public class PedidoService {
 
     public List<PedidoResponseDto> obtenerPedidosUsuario() {
 
-    Usuario usuario = obtenerUsuarioLogueado();
+        Usuario usuario = obtenerUsuarioLogueado();
 
-    List<Factura> facturas =
-            facturaRepository.findByUsuario(usuario);
+        List<Factura> facturas = facturaRepository.findByUsuario(usuario);
 
-    return facturas.stream()
-            .map(pedidoMapper::convertirFacturaADto)
-            .toList();
-}
+        return facturas.stream()
+                .map(pedidoMapper::convertirFacturaADto)
+                .toList();
+    }
 }

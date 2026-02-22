@@ -8,6 +8,6 @@ import com.example.demo.model.Categorias;
 public interface ICategoriaService {
     List<CategoriaDto> listarTodo();
     CategoriaDto guardar(CategoriaDto dto);
-    Categorias buscarId(int idCategoria);
+    CategoriaDto  buscarId(int id);
     CategoriaDto editar(Integer id, CategoriaDto dto);
 }

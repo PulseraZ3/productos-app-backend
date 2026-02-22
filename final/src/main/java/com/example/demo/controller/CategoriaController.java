@@ -38,7 +38,16 @@ public class CategoriaController {
 		response.setResponse(dtos);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-
+	@GetMapping("/{id}")
+	public ResponseEntity<GenericResponseDto<CategoriaDto>> getCategoryById(@PathVariable Integer id) {
+		CategoriaDto categoria = categoriaService.buscarId(id);
+		if (categoria == null) {
+			return ResponseEntity.notFound().build();
+		}
+		GenericResponseDto<CategoriaDto> response = new GenericResponseDto<>();
+		response.setResponse(categoria);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 	
 	@PostMapping
 	public ResponseEntity<CategoriaDto> createCategoria(@RequestBody CategoriaDto dto) {
